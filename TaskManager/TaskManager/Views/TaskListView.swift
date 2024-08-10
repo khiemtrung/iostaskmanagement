@@ -9,11 +9,12 @@ import SwiftUI
 
 struct TaskListView: View {
     @ObservedObject var taskViewModel: TaskViewModel
+    @State private var selectedCategory: String = "All" // Default to "All"
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(taskViewModel.tasks) { task in
+                ForEach(filteredTasks()) { task in
                     // Use a constant to hold the index
                     
                     NavigationLink(destination: TaskDetailsView(taskViewModel: taskViewModel, task: task)) {
@@ -24,10 +25,13 @@ struct TaskListView: View {
                 .onMove(perform: moveTask)
             }
             .navigationBarTitle("Tasks")
-            .navigationBarItems(trailing: HStack {
-                EditButton()
+            .navigationBarItems(
+                //leading: categoryButton,
+                leading: EditButton(),
+                trailing: HStack {
                 addButton
             })
+            
         }
         .onAppear {
             taskViewModel.fetchTasks() // Call fetchTasks() when the view appears
@@ -50,6 +54,34 @@ struct TaskListView: View {
     private func moveTask(from source: IndexSet, to destination: Int) {
         taskViewModel.moveTask(from: source, to: destination) // Call the moveTask function in the ViewModel
     }
+    
+    private var categoryButton: some View {
+        Menu {
+            Button(action: { selectCategory("All") }) {
+                Text("All")
+            }
+            Button(action: { selectCategory("Work") }) {
+                Text("Work")
+            }
+            Button(action: { selectCategory("Personal") }) {
+                Text("Personal")
+            }
+            Button(action: { selectCategory("Others") }) {
+                Text("Others")
+            }
+        } label: {
+            Label("Category: \(selectedCategory)", systemImage: "line.horizontal.3.decrease.circle")
+        }
+    }
+    private func selectCategory(_ category: String) {
+        selectedCategory = category
+    }
+    // Function to filter tasks based on the selected category
+    private func filteredTasks() -> [Task] {
+        taskViewModel.tasks.filter { task in
+                   (selectedCategory == "All" || task.category == selectedCategory) && !task.isCompleted
+               }
+    }
 }
 
 struct TaskRowView: View {
@@ -57,12 +89,9 @@ struct TaskRowView: View {
     
     var body: some View {
         HStack {
-
-            
             VStack(alignment: .leading) {
                 Text(task.name)
                     .font(.headline)
-                
                 
                 Text(task.taskDescription)
                     .font(.subheadline)
@@ -105,20 +134,20 @@ struct TaskRowView: View {
     }
     
     private func categoryIndicator(for category: TaskCategory) -> some View {
-            Circle()
-                .fill(categoryColor(for: category))
-                .frame(width: 12, height: 12) // Adjust the size as needed
-                .padding(.leading, 4) // Add space between the task name and category indicator
+        Circle()
+            .fill(categoryColor(for: category))
+            .frame(width: 12, height: 12) // Adjust the size as needed
+            .padding(.leading, 4) // Add space between the task name and category indicator
+    }
+    
+    private func categoryColor(for category: TaskCategory) -> Color {
+        switch category {
+        case .work:
+            return .blue
+        case .personal:
+            return .orange
+        case .others:
+            return .purple
         }
-        
-        private func categoryColor(for category: TaskCategory) -> Color {
-            switch category {
-            case .work:
-                return .blue
-            case .personal:
-                return .orange
-            case .others:
-                return .purple
-            }
-        }
+    }
 }

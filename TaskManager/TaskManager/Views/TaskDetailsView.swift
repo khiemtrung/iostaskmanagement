@@ -12,37 +12,84 @@ struct TaskDetailsView: View {
     @ObservedObject var taskViewModel: TaskViewModel
     var task: Task
     
-    // State variable for navigation
-    @State private var isEditing = false
-    
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 20) {
                 Text(task.name)
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .padding(.bottom, 10)
+
+                VStack(alignment: .trailing) {
+                    Text(task.taskDescription)
+                        .font(.body)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                    
+                }
+                .padding(0)
+                .background(Color(UIColor.systemGray5)) // Light background for details
+                .cornerRadius(12)
+                .shadow(radius: 4)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Description:")
-                        .font(.headline)
-                    
-                    Text(task.taskDescription)
-                        .padding(.bottom)
-                    
                     Text("Due Date: \(task.dueDate, style: .date)")
-                    Text("Priority: \(task.priority)")
-                    Text("Category: \(task.category)")
-                    Text("Completed: \(task.isCompleted ? "Yes" : "No")")
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(10) // Optional: Keep padding inside the VStack
-                .background(Color(UIColor.systemGray5)) // Light background for details
-                .cornerRadius(10)
-                
+                .padding()
+                .background(Color(UIColor.systemGray5))
+                .cornerRadius(12)
+                .shadow(radius: 4)
                 
                 HStack {
+                    HStack {
+                        // Priority Icon
+                        priorityIcon(for: TaskPriority(rawValue: task.priority) ?? .low)
+                            .resizable()
+                            .frame(width: 20, height: 20) // Adjust the size as needed
+                            .foregroundColor(priorityColor(for: TaskPriority(rawValue: task.priority) ?? .low))
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Priority: \(task.priority)")
+                        }
+                    }
+                    .padding()
+                    .background(Color(UIColor.systemGray5))
+                    .cornerRadius(12)
+                    .shadow(radius: 4)
+                    
+                    
+                    HStack{
+                        categoryIndicator(for: TaskCategory(rawValue: task.category) ?? .work)
+                        Text("Category: \(task.category)")
+                            .font(.subheadline)
+                    }
+                    .padding()
+                    .background(Color(UIColor.systemGray5))
+                    .cornerRadius(12)
+                    .shadow(radius: 4)
+                    
+                }
+                
+                
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Completed: \(task.isCompleted ? "Yes" : "No")")
+                }
+                .padding()
+                .background(Color(UIColor.systemGray5))
+                .cornerRadius(12)
+                .shadow(radius: 4)
+                
+                HStack {
+                    NavigationLink(destination: AddEditTaskView(taskViewModel: taskViewModel, task: task)) {
+                        Text("Edit Task")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                            .shadow(radius: 4)
+                    }
+                    
                     Button(action: {
-                        // Mark as complete logic
                         markAsComplete()
                     }) {
                         Text("Mark as Complete")
@@ -51,23 +98,12 @@ struct TaskDetailsView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color.green)
                             .cornerRadius(8)
+                            .shadow(radius: 4)
                     }
-                    .padding(.horizontal)
-                    
-                    // NavigationLink for editing the task
-                    NavigationLink(destination: AddEditTaskView(taskViewModel: taskViewModel, task: task)) {
-                        Text("Edit Task")
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(8)
-                    }
-                    .padding(.horizontal)
                 }
                 
+                
                 Button(action: {
-                    // Delete task logic
                     deleteTask()
                 }) {
                     Text("Delete Task")
@@ -76,41 +112,70 @@ struct TaskDetailsView: View {
                         .frame(maxWidth: .infinity)
                         .background(Color.red)
                         .cornerRadius(8)
+                        .shadow(radius: 4)
                 }
-                .padding(.horizontal)
+ 
             }
-            .padding(.horizontal) // Apply padding to the parent VStack to match the screen edges
-            .padding(.vertical) // Optional: Add some vertical padding for aesthetics
+            .padding(.horizontal)
+            .padding(.vertical, 20) // Add some vertical padding for aesthetics
         }
         .navigationBarTitle("Task Details", displayMode: .inline)
     }
     
     private func markAsComplete() {
-        // Logic to mark the task as complete
         taskViewModel.updateTaskCompletionStatus(task: task, isCompleted: true)
     }
     
-    private func editTask() {
-        // Logic to navigate to edit task view
-        // This could involve using a presentation mode or navigating to a new view
-    }
-    
     private func deleteTask() {
-        // Logic to delete the task
-        
         taskViewModel.deleteTask(task)
         presentationMode.wrappedValue.dismiss()
+    }
+    
+    private func categoryIndicator(for category: TaskCategory) -> some View {
+        Circle()
+            .fill(categoryColor(for: category))
+            .frame(width: 12, height: 12) // Adjust the size as needed
+            .padding(.leading, 4) // Add space between the task name and category indicator
+    }
+    private func categoryColor(for category: TaskCategory) -> Color {
+        switch category {
+        case .work:
+            return .blue
+        case .personal:
+            return .orange
+        case .others:
+            return .purple
+        }
+    }
+    private func priorityColor(for priority: TaskPriority) -> Color {
+        switch priority {
+        case .high: return .red
+        case .medium: return .yellow
+        case .low: return .green
+        }
+    }
+    private func priorityIcon(for priority: TaskPriority) -> Image {
+        switch priority {
+        case .high:
+            return Image(systemName: "exclamationmark.triangle.fill") // Example icon for high priority
+        case .medium:
+            return Image(systemName: "arrowtriangle.up.fill") // Example icon for medium priority
+        case .low:
+            return Image(systemName: "circle.fill") // Example icon for low priority
+        }
     }
 }
 
 #Preview {
     let sampleTask = Task()
-    sampleTask.name = "Sample Task"
-    sampleTask.taskDescription = "This is a sample task description."
+    sampleTask.name = "Sample Task long long long Sample Task long long long Sample Task long long long "
+    sampleTask.taskDescription = "This is a sample task description. This is a sample task description. This is a sample task description. This is a sample task description. This is a sample task description. This is a sample task description."
     sampleTask.dueDate = Date()
     sampleTask.priority = TaskPriority.high.rawValue
     sampleTask.category = TaskCategory.work.rawValue
     sampleTask.isCompleted = false
+    sampleTask.isDeleted = false
+    sampleTask.order = 0
     
     return TaskDetailsView(taskViewModel: TaskViewModel(), task: sampleTask)
 }
