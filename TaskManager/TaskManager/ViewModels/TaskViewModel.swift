@@ -23,12 +23,24 @@ class TaskViewModel: ObservableObject {
     }
     
     func addTask(_ task: Task) {
-           // Add task to Realm
-           try! realm.write {
-               realm.add(task)
-           }
-           fetchTasks() // Refresh the tasks list after adding a new task
-       }
+        // Add task to Realm
+        try! realm.write {
+            realm.add(task)
+        }
+        fetchTasks() // Refresh the tasks list after adding a new task
+    }
+    
+    // Update an existing task in Realm
+    func editTask(_ task: Task, withName name: String, description: String, dueDate: Date, priority: String, category: String) {
+        try! realm.write {
+            task.name = name
+            task.taskDescription = description
+            task.dueDate = dueDate
+            task.priority = priority
+            task.category = category
+        }
+        fetchTasks() // Refresh tasks
+    }
     
     // Delete task from Realm and refresh the task list
     func deleteTask(_ task: Task) {
@@ -45,17 +57,17 @@ class TaskViewModel: ObservableObject {
     }
     
     func updateTaskCompletionStatus(task: Task, isCompleted: Bool) {
-            try! realm.write {
-                task.isCompleted = isCompleted
-            }
-            fetchTasks()
+        try! realm.write {
+            task.isCompleted = isCompleted
         }
+        fetchTasks()
+    }
     
     func completedTasks() -> [Task] {
-            return tasks.filter { $0.isCompleted }
-        }
-
-        func incompleteTasks() -> [Task] {
-            return tasks.filter { !$0.isCompleted }
-        }
+        return tasks.filter { $0.isCompleted }
+    }
+    
+    func incompleteTasks() -> [Task] {
+        return tasks.filter { !$0.isCompleted }
+    }
 }

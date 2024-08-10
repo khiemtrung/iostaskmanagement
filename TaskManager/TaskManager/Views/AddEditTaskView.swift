@@ -11,13 +11,15 @@ import SwiftUI
 struct AddEditTaskView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var taskViewModel: TaskViewModel
-
+    
+    var task: Task?
+    
     @State private var taskName: String = ""
     @State private var taskDescription: String = ""
     @State private var dueDate: Date = Date()
     @State private var priority: TaskPriority = .medium
     @State private var category: TaskCategory = .work
-
+    
     var body: some View {
         Form {
             Section(header: Text("Task Details")) {
@@ -25,7 +27,7 @@ struct AddEditTaskView: View {
                 TextField("Description", text: $taskDescription)
                 DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
             }
-
+            
             Section(header: Text("Priority")) {
                 Picker("Priority", selection: $priority) {
                     Text("High").tag(TaskPriority.high)
@@ -34,7 +36,7 @@ struct AddEditTaskView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }
-
+            
             Section(header: Text("Category")) {
                 Picker("Category", selection: $category) {
                     Text("Work").tag(TaskCategory.work)
@@ -43,25 +45,40 @@ struct AddEditTaskView: View {
                 }
             }
         }
-        .navigationBarTitle("Add Task", displayMode: .inline)
+        .navigationBarTitle(task == nil ? "Add Task" : "Edit Task", displayMode: .inline)
         .navigationBarItems(trailing: saveButton)
-    }
-
-    private var saveButton: some View {
-            Button(action: {
-                // Save task logic
-                let newTask = Task()
-                newTask.name = taskName
-                newTask.taskDescription = taskDescription // Use the renamed property
-                newTask.dueDate = dueDate
-                newTask.priority = priority.rawValue // Store as String
-                newTask.category = category.rawValue // Store as String
-                newTask.isCompleted = false // Default to not completed
-
-                taskViewModel.addTask(newTask) // Call the addTask method
-                presentationMode.wrappedValue.dismiss() // Dismiss the view after saving
-            }) {
-                Text("Save") // This is where the button title is set
+        .onAppear {
+            // Populate fields if editing an existing task
+            if let task = task {
+                taskName = task.name
+                taskDescription = task.taskDescription
+                dueDate = task.dueDate
+                priority = TaskPriority(rawValue: task.priority) ?? .medium
+                category = TaskCategory(rawValue: task.category) ?? .work
             }
         }
+    }
+    
+    private var saveButton: some View {
+        Button(action: {
+            if let task = task {
+                // Update existing task logic
+                taskViewModel.editTask(task, withName: taskName, description: taskDescription, dueDate: dueDate, priority: priority.rawValue, category: category.rawValue)
+            } else {
+                // Create new task logic
+                let newTask = Task()
+                newTask.name = taskName
+                newTask.taskDescription = taskDescription
+                newTask.dueDate = dueDate
+                newTask.priority = priority.rawValue
+                newTask.category = category.rawValue
+                newTask.isCompleted = false
+                
+                taskViewModel.addTask(newTask)
+            }
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            Text("Save")
+        }
+    }
 }

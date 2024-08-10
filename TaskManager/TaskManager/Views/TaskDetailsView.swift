@@ -12,6 +12,9 @@ struct TaskDetailsView: View {
     @ObservedObject var taskViewModel: TaskViewModel
     var task: Task
     
+    // State variable for navigation
+    @State private var isEditing = false
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -51,10 +54,8 @@ struct TaskDetailsView: View {
                     }
                     .padding(.horizontal)
                     
-                    Button(action: {
-                        // Edit task logic
-                        editTask()
-                    }) {
+                    // NavigationLink for editing the task
+                    NavigationLink(destination: AddEditTaskView(taskViewModel: taskViewModel, task: task)) {
                         Text("Edit Task")
                             .foregroundColor(.white)
                             .padding()
@@ -96,7 +97,7 @@ struct TaskDetailsView: View {
     
     private func deleteTask() {
         // Logic to delete the task
-
+        
         taskViewModel.deleteTask(task)
         presentationMode.wrappedValue.dismiss()
     }
