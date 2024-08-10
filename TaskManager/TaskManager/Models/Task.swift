@@ -18,6 +18,7 @@ class Task: Object, Identifiable {
     @objc dynamic var isCompleted = false
     @objc dynamic var isDeleted = false
     @objc dynamic var order: Int = 0 
+    @objc dynamic var reminderDate: Date? = nil
 
     override static func primaryKey() -> String? {
         return "id"

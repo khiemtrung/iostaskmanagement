@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
-
+import UserNotifications
 
 struct AddEditTaskView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var taskViewModel: TaskViewModel
+    @State private var reminderDate: Date? = nil
     
     var task: Task?
     
@@ -28,7 +29,7 @@ struct AddEditTaskView: View {
                 TextField("Task Name", text: $taskName)
                 TextField("Description", text: $taskDescription)
                 DatePicker("Due Date", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
-                                    .environment(\.locale, Locale(identifier: "en_GB")) // Optional: Set locale for 24-hour format
+                    .environment(\.locale, Locale(identifier: "en_GB")) // Optional: Set locale for 24-hour format
             }
             
             Section(header: Text("Priority")) {
@@ -47,6 +48,22 @@ struct AddEditTaskView: View {
                     Text("Other").tag(TaskCategory.others)
                 }
             }
+            
+            Section(header: Text("Reminder")) {
+                Toggle(isOn: Binding(
+                    get: { reminderDate != nil },
+                    set: { if $0 { reminderDate = Date() } else { reminderDate = nil } }
+                )) {
+                    Text("Set Reminder")
+                }
+                
+                if let unwrappedReminderDate = reminderDate {
+                    DatePicker("Reminder Date", selection: Binding(
+                        get: { unwrappedReminderDate },
+                        set: { reminderDate = $0 }
+                    ), displayedComponents: [.date, .hourAndMinute])
+                }
+            }
         }
         .navigationBarTitle(task == nil ? "Add Task" : "Edit Task", displayMode: .inline)
         .navigationBarItems(trailing: saveButton)
@@ -58,6 +75,7 @@ struct AddEditTaskView: View {
                 dueDate = task.dueDate
                 priority = TaskPriority(rawValue: task.priority) ?? .medium
                 category = TaskCategory(rawValue: task.category) ?? .work
+                reminderDate = task.reminderDate // Populate reminder date if editing
             }
         }
         .alert(isPresented: $showAlert) {
@@ -75,7 +93,7 @@ struct AddEditTaskView: View {
             
             if let existingTask = task {
                 // Update the existing task
-                taskViewModel.editTask(existingTask, withName: taskName, description: taskDescription, dueDate: dueDate, priority: priority.rawValue, category: category.rawValue)
+                taskViewModel.editTask(existingTask, withName: taskName, description: taskDescription, dueDate: dueDate, priority: priority.rawValue, category: category.rawValue, reminderDate: reminderDate)
             } else {
                 // Create a new task with the unique order
                 let newOrder: Int
@@ -95,9 +113,11 @@ struct AddEditTaskView: View {
                 newTask.category = category.rawValue
                 newTask.isCompleted = false
                 newTask.order = newOrder // Set the unique order
+                newTask.reminderDate = reminderDate // Set reminder date
                 
                 // Add the task to the view model
                 taskViewModel.addTask(newTask)
+                
             }
             
             // Dismiss the view
@@ -106,4 +126,6 @@ struct AddEditTaskView: View {
             Text("Save")
         }
     }
+    
+  
 }

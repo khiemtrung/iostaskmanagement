@@ -28,22 +28,33 @@ class TaskViewModel: ObservableObject {
         task.order = currentMaxOrder + 1 // Set the order for the new task
         
         // Add task to Realm
-        try! realm.write {
-            realm.add(task)
+        do {
+            try realm.write {
+                realm.add(task)
+            }
+            fetchTasks() // Refresh the tasks list after adding a new task
+            
+            // Schedule the reminder after adding the task
+            scheduleReminder(for: task)
+        } catch {
+            print("Error adding task: \(error)")
         }
-        fetchTasks() // Refresh the tasks list after adding a new task
     }
     
     // Update an existing task in Realm
-    func editTask(_ task: Task, withName name: String, description: String, dueDate: Date, priority: String, category: String) {
+    func editTask(_ task: Task, withName name: String, description: String, dueDate: Date, priority: String, category: String, reminderDate: Date?) {
         try! realm.write {
             task.name = name
             task.taskDescription = description
             task.dueDate = dueDate
             task.priority = priority
             task.category = category
+            task.reminderDate = reminderDate
         }
         fetchTasks() // Refresh tasks
+        
+        // Reschedule the reminder
+        scheduleReminder(for: task)
     }
     
     // Delete task from Realm and refresh the task list
@@ -97,5 +108,27 @@ class TaskViewModel: ObservableObject {
         
         fetchTasks() // Refresh the task list if needed
     }
-
+    
+    private func scheduleReminder(for task: Task) {
+        guard let reminderDate = task.reminderDate else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Task Reminder"
+        content.body = "Reminder for task: \(task.name)"
+        content.sound = .default
+        
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: task.id, content: content, trigger: trigger)
+        
+        
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule reminder: \(error)")
+            }
+        }
+    }
+    
 }
