@@ -7,10 +7,13 @@
 
 import SwiftUI
 
+
 struct AddEditTaskView: View {
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var taskViewModel: TaskViewModel
+
     @State private var taskName: String = ""
-    @State private var description: String = ""
+    @State private var taskDescription: String = ""
     @State private var dueDate: Date = Date()
     @State private var priority: TaskPriority = .medium
     @State private var category: TaskCategory = .work
@@ -19,7 +22,7 @@ struct AddEditTaskView: View {
         Form {
             Section(header: Text("Task Details")) {
                 TextField("Task Name", text: $taskName)
-                TextField("Description", text: $description)
+                TextField("Description", text: $taskDescription)
                 DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
             }
 
@@ -36,7 +39,7 @@ struct AddEditTaskView: View {
                 Picker("Category", selection: $category) {
                     Text("Work").tag(TaskCategory.work)
                     Text("Personal").tag(TaskCategory.personal)
-                    Text("Other").tag(TaskCategory.other)
+                    Text("Other").tag(TaskCategory.others)
                 }
             }
         }
@@ -45,9 +48,20 @@ struct AddEditTaskView: View {
     }
 
     private var saveButton: some View {
-        Button("Save") {
-            // Save task logic
-            presentationMode.wrappedValue.dismiss()
+            Button(action: {
+                // Save task logic
+                let newTask = Task()
+                newTask.name = taskName
+                newTask.taskDescription = taskDescription // Use the renamed property
+                newTask.dueDate = dueDate
+                newTask.priority = priority.rawValue // Store as String
+                newTask.category = category.rawValue // Store as String
+                newTask.isCompleted = false // Default to not completed
+
+                taskViewModel.addTask(newTask) // Call the addTask method
+                presentationMode.wrappedValue.dismiss() // Dismiss the view after saving
+            }) {
+                Text("Save") // This is where the button title is set
+            }
         }
-    }
 }

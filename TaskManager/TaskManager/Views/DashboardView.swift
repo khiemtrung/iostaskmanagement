@@ -8,36 +8,48 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @ObservedObject var taskViewModel: TaskViewModel
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack {
             Text("Dashboard")
                 .font(.largeTitle)
-                .bold()
+                .padding()
 
             HStack {
                 VStack {
                     Text("Completed Tasks")
-                    // Placeholder for task stats, replace with actual data
-                    Text("10")
+                        .font(.headline)
+                    Text("\(taskViewModel.completedTasks().count)")
                         .font(.title)
+                        .foregroundColor(.white)
                 }
                 .padding()
-                .background(Color.green.opacity(0.1))
-                .cornerRadius(8)
+                .background(Color.green) // Background color for completed tasks
+                .cornerRadius(10)
 
                 VStack {
                     Text("Pending Tasks")
-                    Text("5")
+                        .font(.headline)
+                    Text("\(taskViewModel.incompleteTasks().count)")
                         .font(.title)
+                        .foregroundColor(.white)
                 }
                 .padding()
-                .background(Color.red.opacity(0.1))
-                .cornerRadius(8)
+                .background(Color.orange) // Background color for pending tasks
+                .cornerRadius(10)
             }
+            .padding(.horizontal)
 
             Spacer()
         }
         .padding()
+        .background(Color(UIColor.systemGray6)) // Light gray background for the dashboard
+        .cornerRadius(15)
+        .padding()
     }
 }
 
+#Preview {
+    DashboardView(taskViewModel: TaskViewModel())
+}

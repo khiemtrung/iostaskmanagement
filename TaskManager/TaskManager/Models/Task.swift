@@ -6,15 +6,20 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Task: Identifiable {
-    var id = UUID()
-    var name: String
-    var description: String
-    var dueDate: Date
-    var priority: TaskPriority
-    var category: TaskCategory
-    var isCompleted: Bool = false
+class Task: Object, Identifiable {
+    @objc dynamic var id = UUID().uuidString
+    @objc dynamic var name = ""
+    @objc dynamic var taskDescription = "" // Rename to avoid conflict with Swift's keyword
+    @objc dynamic var dueDate = Date()
+    @objc dynamic var priority = TaskPriority.low.rawValue // Store as String or enum
+    @objc dynamic var category = TaskCategory.work.rawValue // Store as String or enum
+    @objc dynamic var isCompleted = false
+
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 }
 
 enum TaskPriority: String {
@@ -26,5 +31,5 @@ enum TaskPriority: String {
 enum TaskCategory: String {
     case work = "Work"
     case personal = "Personal"
-    case other = "Other"
+    case others = "Others"
 }

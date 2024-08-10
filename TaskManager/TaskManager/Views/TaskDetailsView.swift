@@ -13,15 +13,13 @@ struct TaskDetailsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(task.name)
-                .font(.largeTitle)
-                .bold()
-            Text("Due Date: \(task.dueDate, style: .date)")
-            Text("Priority: \(task.priority.rawValue)")
-            Text("Category: \(task.category.rawValue)")
-            Text(task.description)
-                .font(.body)
-
-            Spacer()
+                            .font(.largeTitle)
+                        Text("Description: \(task.taskDescription)")
+                        Text("Due Date: \(task.dueDate, style: .date)")
+                        Text("Priority: \(task.priority)")
+                        Text("Category: \(task.category)")
+                        Text("Completed: \(task.isCompleted ? "Yes" : "No")")
+                        Spacer()
 
             HStack {
                 Button(action: {

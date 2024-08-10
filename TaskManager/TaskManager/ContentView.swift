@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var taskViewModel = TaskViewModel()
     var body: some View {
             TabView {
-                TaskListView()
+                TaskListView(taskViewModel: taskViewModel)
                     .tabItem {
                         Image(systemName: "list.bullet")
                         Text("Tasks")
                     }
 
-                DashboardView()
+                DashboardView(taskViewModel: taskViewModel)
                     .tabItem {
                         Image(systemName: "chart.bar")
                         Text("Dashboard")
