@@ -14,6 +14,8 @@
 		9712515A2C6692BA00A866AD /* TaskDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971251592C6692BA00A866AD /* TaskDetailsView.swift */; };
 		9712515C2C6692CF00A866AD /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9712515B2C6692CF00A866AD /* DashboardView.swift */; };
 		971251602C66957E00A866AD /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9712515F2C66957E00A866AD /* TaskViewModel.swift */; };
+		971251702C679C9000A866AD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9712516F2C679C9000A866AD /* CalendarView.swift */; };
+		971251742C679ED900A866AD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971251732C679ED900A866AD /* CalendarViewController.swift */; };
 		97F0542F2C665F45009F49E1 /* TaskManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F0542E2C665F45009F49E1 /* TaskManagerApp.swift */; };
 		97F054312C665F45009F49E1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F054302C665F45009F49E1 /* ContentView.swift */; };
 		97F054332C665F47009F49E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F054322C665F47009F49E1 /* Assets.xcassets */; };
@@ -28,6 +30,8 @@
 		971251592C6692BA00A866AD /* TaskDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailsView.swift; sourceTree = "<group>"; };
 		9712515B2C6692CF00A866AD /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		9712515F2C66957E00A866AD /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
+		9712516F2C679C9000A866AD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		971251732C679ED900A866AD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		97F0542B2C665F45009F49E1 /* TaskManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F0542E2C665F45009F49E1 /* TaskManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManagerApp.swift; sourceTree = "<group>"; };
 		97F054302C665F45009F49E1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 				971251572C6692A800A866AD /* AddEditTaskView.swift */,
 				971251592C6692BA00A866AD /* TaskDetailsView.swift */,
 				9712515B2C6692CF00A866AD /* DashboardView.swift */,
+				9712516F2C679C9000A866AD /* CalendarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -63,6 +68,7 @@
 		971251502C668E5100A866AD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				971251732C679ED900A866AD /* CalendarViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -263,11 +269,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				971251742C679ED900A866AD /* CalendarViewController.swift in Sources */,
 				971251562C66926A00A866AD /* Task.swift in Sources */,
 				97F054312C665F45009F49E1 /* ContentView.swift in Sources */,
 				9712515A2C6692BA00A866AD /* TaskDetailsView.swift in Sources */,
 				9712515C2C6692CF00A866AD /* DashboardView.swift in Sources */,
 				97F0542F2C665F45009F49E1 /* TaskManagerApp.swift in Sources */,
+				971251702C679C9000A866AD /* CalendarView.swift in Sources */,
 				971251602C66957E00A866AD /* TaskViewModel.swift in Sources */,
 				971251542C668EE500A866AD /* TaskListView.swift in Sources */,
 				971251582C6692A800A866AD /* AddEditTaskView.swift in Sources */,
