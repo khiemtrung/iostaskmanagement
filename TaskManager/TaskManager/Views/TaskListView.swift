@@ -23,6 +23,9 @@ struct TaskListView: View {
             .navigationBarTitle("Tasks")
             .navigationBarItems(trailing: addButton)
         }
+        .onAppear {
+            taskViewModel.fetchTasks() // Call fetchTasks() when the view appears
+        }
     }
     
     private var addButton: some View {
@@ -40,7 +43,7 @@ struct TaskListView: View {
 
 struct TaskRowView: View {
     var task: Task
-
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -58,7 +61,7 @@ struct TaskRowView: View {
         }
         .padding(.vertical, 8)
     }
-
+    
     private func priorityColor(for priority: TaskPriority) -> Color {
         switch priority {
         case .high: return .red

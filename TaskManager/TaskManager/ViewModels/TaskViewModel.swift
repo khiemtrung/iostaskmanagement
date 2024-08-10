@@ -29,12 +29,14 @@ class TaskViewModel: ObservableObject {
            fetchTasks() // Refresh the tasks list after adding a new task
        }
     
-    func deleteTask(_ task: Task) {
-        try! realm.write {
-            realm.delete(task)
+    // Delete task from Realm and refresh the task list
+        func deleteTask(_ task: Task) {
+            guard let taskToDelete = realm.object(ofType: Task.self, forPrimaryKey: task.id) else { return }
+            try! realm.write {
+                realm.delete(taskToDelete)
+            }
+            fetchTasks() // Refresh tasks
         }
-        fetchTasks() // Refresh tasks
-    }
     
     func completedTasks() -> [Task] {
             return tasks.filter { $0.isCompleted }
