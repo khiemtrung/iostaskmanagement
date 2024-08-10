@@ -14,14 +14,20 @@ struct TaskListView: View {
         NavigationView {
             List {
                 ForEach(taskViewModel.tasks) { task in
+                    // Use a constant to hold the index
+                   
                     NavigationLink(destination: TaskDetailsView(taskViewModel: taskViewModel, task: task)) {
                         TaskRowView(task: task)
                     }
                 }
                 .onDelete(perform: deleteTasks)
+                .onMove(perform: moveTask)
             }
             .navigationBarTitle("Tasks")
-            .navigationBarItems(trailing: addButton)
+            .navigationBarItems(trailing: HStack {
+                EditButton()
+                addButton
+            })
         }
         .onAppear {
             taskViewModel.fetchTasks() // Call fetchTasks() when the view appears
@@ -40,6 +46,10 @@ struct TaskListView: View {
             taskViewModel.deleteTask(taskToDelete)
         }
     }
+    
+    private func moveTask(from source: IndexSet, to destination: Int) {
+            taskViewModel.moveTask(from: source, to: destination) // Call the moveTask function in the ViewModel
+        }
 }
 
 struct TaskRowView: View {
@@ -54,6 +64,8 @@ struct TaskRowView: View {
                     .font(.subheadline)
                 Text(task.dueDate, style: .date)
                     .font(.subheadline)
+//                Text("\(task.order)")
+//                    .font(.subheadline)
             }
             Spacer()
             Circle()
@@ -70,7 +82,4 @@ struct TaskRowView: View {
         case .low: return .green
         }
     }
-}
-#Preview {
-    ContentView()
 }

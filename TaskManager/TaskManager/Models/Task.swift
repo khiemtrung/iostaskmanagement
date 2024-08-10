@@ -17,6 +17,7 @@ class Task: Object, Identifiable {
     @objc dynamic var category = TaskCategory.work.rawValue // Store as String or enum
     @objc dynamic var isCompleted = false
     @objc dynamic var isDeleted = false
+    @objc dynamic var order: Int = 0 
 
     override static func primaryKey() -> String? {
         return "id"
