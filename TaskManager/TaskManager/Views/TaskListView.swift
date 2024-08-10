@@ -15,7 +15,7 @@ struct TaskListView: View {
             List {
                 ForEach(taskViewModel.tasks) { task in
                     // Use a constant to hold the index
-                   
+                    
                     NavigationLink(destination: TaskDetailsView(taskViewModel: taskViewModel, task: task)) {
                         TaskRowView(task: task)
                     }
@@ -32,7 +32,7 @@ struct TaskListView: View {
         .onAppear {
             taskViewModel.fetchTasks() // Call fetchTasks() when the view appears
         }
-    
+        
     }
     
     private var addButton: some View {
@@ -48,8 +48,8 @@ struct TaskListView: View {
     }
     
     private func moveTask(from source: IndexSet, to destination: Int) {
-            taskViewModel.moveTask(from: source, to: destination) // Call the moveTask function in the ViewModel
-        }
+        taskViewModel.moveTask(from: source, to: destination) // Call the moveTask function in the ViewModel
+    }
 }
 
 struct TaskRowView: View {
@@ -57,22 +57,36 @@ struct TaskRowView: View {
     
     var body: some View {
         HStack {
+            
+            
             VStack(alignment: .leading) {
                 Text(task.name)
                     .font(.headline)
-                Text(task.taskDescription) // Use taskDescription instead of description
+                Text(task.taskDescription)
                     .font(.subheadline)
                 Text(task.dueDate, style: .date)
                     .font(.subheadline)
-//                Text("\(task.order)")
-//                    .font(.subheadline)
             }
             Spacer()
-            Circle()
-                .fill(priorityColor(for: TaskPriority(rawValue: task.priority) ?? .low)) // Convert string back to enum
-                .frame(width: 20, height: 20)
+            
+            // Priority Icon
+            priorityIcon(for: TaskPriority(rawValue: task.priority) ?? .low)
+                .resizable()
+                .frame(width: 24, height: 24) // Adjust the size as needed
+                .foregroundColor(priorityColor(for: TaskPriority(rawValue: task.priority) ?? .low))
         }
         .padding(.vertical, 8)
+    }
+    
+    private func priorityIcon(for priority: TaskPriority) -> Image {
+        switch priority {
+        case .high:
+            return Image(systemName: "exclamationmark.triangle.fill") // Example icon for high priority
+        case .medium:
+            return Image(systemName: "arrowtriangle.up.fill") // Example icon for medium priority
+        case .low:
+            return Image(systemName: "circle.fill") // Example icon for low priority
+        }
     }
     
     private func priorityColor(for priority: TaskPriority) -> Color {

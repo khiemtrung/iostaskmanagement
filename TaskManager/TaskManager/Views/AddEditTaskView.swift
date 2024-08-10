@@ -20,6 +20,8 @@ struct AddEditTaskView: View {
     @State private var priority: TaskPriority = .medium
     @State private var category: TaskCategory = .work
     
+    @State private var showAlert: Bool = false
+    
     var body: some View {
         Form {
             Section(header: Text("Task Details")) {
@@ -57,10 +59,20 @@ struct AddEditTaskView: View {
                 category = TaskCategory(rawValue: task.category) ?? .work
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Missing Title"), message: Text("Please enter a task name."), dismissButton: .default(Text("OK")))
+        }
     }
     
     private var saveButton: some View {
         Button(action: {
+            
+            // Validate that task name is not empty
+            if taskName.isEmpty {
+                showAlert = true
+                return
+            }
+            
             // Fetch the current highest order value
             let currentTasks = taskViewModel.tasks
             let newOrder: Int
