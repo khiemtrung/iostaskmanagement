@@ -17,7 +17,8 @@ class TaskViewModel: ObservableObject {
     }
     
     func fetchTasks() {
-        let results = realm.objects(Task.self)
+        
+        let results = realm.objects(Task.self).filter("isDeleted == false")
         tasks = Array(results)
     }
     
@@ -30,12 +31,24 @@ class TaskViewModel: ObservableObject {
        }
     
     // Delete task from Realm and refresh the task list
-        func deleteTask(_ task: Task) {
-            guard let taskToDelete = realm.object(ofType: Task.self, forPrimaryKey: task.id) else { return }
-            try! realm.write {
-                realm.delete(taskToDelete)
+    func deleteTask(_ task: Task) {
+        guard let taskToDelete = realm.object(ofType: Task.self, forPrimaryKey: task.id) else { return }
+        do {
+            try realm.write {
+                //realm.delete(taskToDelete)
+                taskToDelete.isDeleted = true
             }
             fetchTasks() // Refresh tasks
+        } catch {
+            print("Error deleting task: \(error.localizedDescription)")
+        }
+    }
+    
+    func updateTaskCompletionStatus(task: Task, isCompleted: Bool) {
+            try! realm.write {
+                task.isCompleted = isCompleted
+            }
+            fetchTasks()
         }
     
     func completedTasks() -> [Task] {

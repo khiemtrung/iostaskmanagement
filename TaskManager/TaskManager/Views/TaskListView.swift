@@ -14,7 +14,7 @@ struct TaskListView: View {
         NavigationView {
             List {
                 ForEach(taskViewModel.tasks) { task in
-                    NavigationLink(destination: TaskDetailsView(task: task)) {
+                    NavigationLink(destination: TaskDetailsView(taskViewModel: taskViewModel, task: task)) {
                         TaskRowView(task: task)
                     }
                 }
@@ -26,6 +26,7 @@ struct TaskListView: View {
         .onAppear {
             taskViewModel.fetchTasks() // Call fetchTasks() when the view appears
         }
+    
     }
     
     private var addButton: some View {

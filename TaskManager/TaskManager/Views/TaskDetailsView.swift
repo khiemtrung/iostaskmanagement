@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct TaskDetailsView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var taskViewModel: TaskViewModel
     var task: Task
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -23,7 +25,7 @@ struct TaskDetailsView: View {
                     
                     Text(task.taskDescription)
                         .padding(.bottom)
-
+                    
                     Text("Due Date: \(task.dueDate, style: .date)")
                     Text("Priority: \(task.priority)")
                     Text("Category: \(task.category)")
@@ -33,11 +35,12 @@ struct TaskDetailsView: View {
                 .padding(10) // Optional: Keep padding inside the VStack
                 .background(Color(UIColor.systemGray5)) // Light background for details
                 .cornerRadius(10)
-
+                
                 
                 HStack {
                     Button(action: {
                         // Mark as complete logic
+                        markAsComplete()
                     }) {
                         Text("Mark as Complete")
                             .foregroundColor(.white)
@@ -47,9 +50,10 @@ struct TaskDetailsView: View {
                             .cornerRadius(8)
                     }
                     .padding(.horizontal)
-
+                    
                     Button(action: {
                         // Edit task logic
+                        editTask()
                     }) {
                         Text("Edit Task")
                             .foregroundColor(.white)
@@ -63,6 +67,7 @@ struct TaskDetailsView: View {
                 
                 Button(action: {
                     // Delete task logic
+                    deleteTask()
                 }) {
                     Text("Delete Task")
                         .foregroundColor(.white)
@@ -78,6 +83,23 @@ struct TaskDetailsView: View {
         }
         .navigationBarTitle("Task Details", displayMode: .inline)
     }
+    
+    private func markAsComplete() {
+        // Logic to mark the task as complete
+        taskViewModel.updateTaskCompletionStatus(task: task, isCompleted: true)
+    }
+    
+    private func editTask() {
+        // Logic to navigate to edit task view
+        // This could involve using a presentation mode or navigating to a new view
+    }
+    
+    private func deleteTask() {
+        // Logic to delete the task
+
+        taskViewModel.deleteTask(task)
+        presentationMode.wrappedValue.dismiss()
+    }
 }
 
 #Preview {
@@ -89,5 +111,5 @@ struct TaskDetailsView: View {
     sampleTask.category = TaskCategory.work.rawValue
     sampleTask.isCompleted = false
     
-    return TaskDetailsView(task: sampleTask)
+    return TaskDetailsView(taskViewModel: TaskViewModel(), task: sampleTask)
 }
