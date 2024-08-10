@@ -27,7 +27,8 @@ struct AddEditTaskView: View {
             Section(header: Text("Task Details")) {
                 TextField("Task Name", text: $taskName)
                 TextField("Description", text: $taskDescription)
-                DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
+                DatePicker("Due Date", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
+                                    .environment(\.locale, Locale(identifier: "en_GB")) // Optional: Set locale for 24-hour format
             }
             
             Section(header: Text("Priority")) {

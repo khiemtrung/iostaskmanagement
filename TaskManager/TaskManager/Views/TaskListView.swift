@@ -95,7 +95,7 @@ struct TaskRowView: View {
                 
                 Text(task.taskDescription)
                     .font(.subheadline)
-                Text(task.dueDate, style: .date)
+                Text(task.dueDate.formatted(.dateTime.month().day().hour().minute()))
                     .font(.subheadline)
                 HStack{
                     categoryIndicator(for: TaskCategory(rawValue: task.category) ?? .work)

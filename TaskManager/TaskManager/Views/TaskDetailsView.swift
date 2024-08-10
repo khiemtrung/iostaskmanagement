@@ -33,7 +33,7 @@ struct TaskDetailsView: View {
                 .shadow(radius: 4)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Due Date: \(task.dueDate, style: .date)")
+                    Text("Due Date: \(task.dueDate.formatted(.dateTime.month().day().hour().minute()))")
                 }
                 .padding()
                 .background(Color(UIColor.systemGray5))

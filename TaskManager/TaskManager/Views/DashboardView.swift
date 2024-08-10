@@ -43,7 +43,6 @@ struct DashboardView: View {
 
             Spacer()
         }
-        .padding()
         .background(Color(UIColor.systemGray6)) // Light gray background for the dashboard
         .cornerRadius(15)
         .padding()
