@@ -57,15 +57,22 @@ struct TaskRowView: View {
     
     var body: some View {
         HStack {
-            
+
             
             VStack(alignment: .leading) {
                 Text(task.name)
                     .font(.headline)
+                
+                
                 Text(task.taskDescription)
                     .font(.subheadline)
                 Text(task.dueDate, style: .date)
                     .font(.subheadline)
+                HStack{
+                    categoryIndicator(for: TaskCategory(rawValue: task.category) ?? .work)
+                    Text(task.category)
+                        .font(.subheadline)
+                }
             }
             Spacer()
             
@@ -96,4 +103,22 @@ struct TaskRowView: View {
         case .low: return .green
         }
     }
+    
+    private func categoryIndicator(for category: TaskCategory) -> some View {
+            Circle()
+                .fill(categoryColor(for: category))
+                .frame(width: 12, height: 12) // Adjust the size as needed
+                .padding(.leading, 4) // Add space between the task name and category indicator
+        }
+        
+        private func categoryColor(for category: TaskCategory) -> Color {
+            switch category {
+            case .work:
+                return .blue
+            case .personal:
+                return .orange
+            case .others:
+                return .purple
+            }
+        }
 }

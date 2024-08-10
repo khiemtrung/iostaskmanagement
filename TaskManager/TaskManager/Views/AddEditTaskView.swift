@@ -66,34 +66,38 @@ struct AddEditTaskView: View {
     
     private var saveButton: some View {
         Button(action: {
-            
             // Validate that task name is not empty
             if taskName.isEmpty {
                 showAlert = true
                 return
             }
             
-            // Fetch the current highest order value
-            let currentTasks = taskViewModel.tasks
-            let newOrder: Int
-            if let maxOrder = currentTasks.map({ $0.order }).max() {
-                newOrder = maxOrder + 1 // Set new order to max + 1
+            if let existingTask = task {
+                // Update the existing task
+                taskViewModel.editTask(existingTask, withName: taskName, description: taskDescription, dueDate: dueDate, priority: priority.rawValue, category: category.rawValue)
             } else {
-                newOrder = 0 // If no tasks exist, start from 0
+                // Create a new task with the unique order
+                let newOrder: Int
+                let currentTasks = taskViewModel.tasks
+                if let maxOrder = currentTasks.map({ $0.order }).max() {
+                    newOrder = maxOrder + 1 // Set new order to max + 1
+                } else {
+                    newOrder = 0 // If no tasks exist, start from 0
+                }
+                
+                // Create a new task
+                let newTask = Task()
+                newTask.name = taskName
+                newTask.taskDescription = taskDescription
+                newTask.dueDate = dueDate
+                newTask.priority = priority.rawValue
+                newTask.category = category.rawValue
+                newTask.isCompleted = false
+                newTask.order = newOrder // Set the unique order
+                
+                // Add the task to the view model
+                taskViewModel.addTask(newTask)
             }
-            
-            // Create a new task with the unique order
-            let newTask = Task()
-            newTask.name = taskName
-            newTask.taskDescription = taskDescription
-            newTask.dueDate = dueDate
-            newTask.priority = priority.rawValue
-            newTask.category = category.rawValue
-            newTask.isCompleted = false
-            newTask.order = newOrder // Set the unique order
-            
-            // Add the task to the view model
-            taskViewModel.addTask(newTask)
             
             // Dismiss the view
             presentationMode.wrappedValue.dismiss()
