@@ -30,9 +30,10 @@ A visually appealing and intuitive task management app for iOS devices.
 
 - Swift
 - SwiftUI
-- Core Data for persistent storage
+- ReamlSwift for persistent storage
 - UserNotifications for managing reminders
 - CalendarKit for custom calendar views
+- SwiftIUChart for Dashboard chart 
 
 ## Installation
 
@@ -86,7 +87,7 @@ To run this project locally, follow these steps:
 - Fix bug for some time re-order not update correct posisition
 - Action for show specific list when tap on Dashboard view
 - Delete sub-task
-
+- Optimize UI
 
 ## Screenshots
 ![Task List Screen](https://i.imgur.com/g54DDr0.png)
