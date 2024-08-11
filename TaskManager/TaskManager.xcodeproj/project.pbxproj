@@ -17,6 +17,7 @@
 		971251702C679C9000A866AD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9712516F2C679C9000A866AD /* CalendarView.swift */; };
 		971251742C679ED900A866AD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971251732C679ED900A866AD /* CalendarViewController.swift */; };
 		97437E722C689B1F00554C8E /* SubTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97437E712C689B1F00554C8E /* SubTask.swift */; };
+		97437E752C68CBBA00554C8E /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 97437E742C68CBBA00554C8E /* SwiftUICharts */; };
 		97F0542F2C665F45009F49E1 /* TaskManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F0542E2C665F45009F49E1 /* TaskManagerApp.swift */; };
 		97F054312C665F45009F49E1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F054302C665F45009F49E1 /* ContentView.swift */; };
 		97F054332C665F47009F49E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F054322C665F47009F49E1 /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0100EAE5042B53E128E11847 /* Pods_TaskManager.framework in Frameworks */,
+				97437E752C68CBBA00554C8E /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +178,9 @@
 			dependencies = (
 			);
 			name = TaskManager;
+			packageProductDependencies = (
+				97437E742C68CBBA00554C8E /* SwiftUICharts */,
+			);
 			productName = TaskManager;
 			productReference = 97F0542B2C665F45009F49E1 /* TaskManager.app */;
 			productType = "com.apple.product-type.application";
@@ -204,6 +209,9 @@
 				Base,
 			);
 			mainGroup = 97F054222C665F45009F49E1;
+			packageReferences = (
+				97437E732C68CBBA00554C8E /* XCRemoteSwiftPackageReference "SwiftUICharts" */,
+			);
 			productRefGroup = 97F0542C2C665F45009F49E1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -492,6 +500,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		97437E732C68CBBA00554C8E /* XCRemoteSwiftPackageReference "SwiftUICharts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/willdale/SwiftUICharts?tab=readme-ov-file";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		97437E742C68CBBA00554C8E /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97437E732C68CBBA00554C8E /* XCRemoteSwiftPackageReference "SwiftUICharts" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97F054232C665F45009F49E1 /* Project object */;
 }

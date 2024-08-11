@@ -44,18 +44,18 @@ class TaskViewModel: ObservableObject {
     }
     
     func toggleSubtaskCompletion(_ subtask: Subtask) {
-           // Find the task that contains the subtask and toggle its completion
-           if let taskIndex = tasks.firstIndex(where: { $0.subtasks.contains(where: { $0.id == subtask.id }) }) {
-               if let subtaskIndex = tasks[taskIndex].subtasks.firstIndex(where: { $0.id == subtask.id }) {
-                   // Start a write transaction
-                   try! realm.write {
-                       tasks[taskIndex].subtasks[subtaskIndex].isCompleted.toggle()
-                   }
-                   // Notify the view model or update UI state if needed
-                   objectWillChange.send()
-               }
-           }
-       }
+        // Find the task that contains the subtask and toggle its completion
+        if let taskIndex = tasks.firstIndex(where: { $0.subtasks.contains(where: { $0.id == subtask.id }) }) {
+            if let subtaskIndex = tasks[taskIndex].subtasks.firstIndex(where: { $0.id == subtask.id }) {
+                // Start a write transaction
+                try! realm.write {
+                    tasks[taskIndex].subtasks[subtaskIndex].isCompleted.toggle()
+                }
+                // Notify the view model or update UI state if needed
+                objectWillChange.send()
+            }
+        }
+    }
     
     func addSubtask(to task: Task, withName name: String) {
         let subtask = Subtask()
@@ -125,15 +125,18 @@ class TaskViewModel: ObservableObject {
         // Get the tasks that are being moved
         let tasksToMove = source.map { tasks[$0] }
         
-        // Update the tasks array to reflect the new order
-        tasks.move(fromOffsets: source, toOffset: destination)
+        // Remove the tasks from the original positions
+        tasks.remove(atOffsets: source)
+        
+        // Insert the tasks at the new destination
+        tasks.insert(contentsOf: tasksToMove, at: destination)
         
         do {
             try realm.write {
-                // Reset the order for all tasks
+                // Reset the order for all tasks based on the new positions
                 for (index, task) in tasks.enumerated() {
                     if let affectedTask = realm.object(ofType: Task.self, forPrimaryKey: task.id) {
-                        affectedTask.order = index + 1 // Adjusting to start order from 1
+                        affectedTask.order = index // Update the order based on the new index
                     }
                 }
             }
