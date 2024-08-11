@@ -36,6 +36,8 @@ class TaskViewModel: ObservableObject {
             
             // Schedule the reminder after adding the task
             scheduleReminder(for: task)
+            
+            objectWillChange.send()
         } catch {
             print("Error adding task: \(error)")
         }
@@ -49,6 +51,8 @@ class TaskViewModel: ObservableObject {
                    try! realm.write {
                        tasks[taskIndex].subtasks[subtaskIndex].isCompleted.toggle()
                    }
+                   // Notify the view model or update UI state if needed
+                   objectWillChange.send()
                }
            }
        }

@@ -121,39 +121,43 @@ struct TaskRowView: View {
             }
             .padding(.vertical, 8)
             
-           /*
+           
             // Button to expand/collapse subtasks
-            Button(action: {
-                isExpanded.toggle()
-            }) {
-                Text(isExpanded ? "Hide Subtasks" : "Show Subtasks")
-                    .foregroundColor(.blue)
-                    .padding() // Add padding to make it clear it's a separate button
-                    .frame(maxWidth: .infinity, alignment: .leading) // Align it to the left
-            }
-            .buttonStyle(PlainButtonStyle()) // Make the button style plain to avoid navigation interference
-            
-            if isExpanded {
-                VStack(alignment: .leading) {
-                    ForEach(task.subtasks, id: \.id) { subtask in
-                        HStack {
-                            Text(subtask.name)
-                                .font(.subheadline)
-                            Spacer()
-                            // Checkmark for completion
-                            Button(action: {
-                                // Handle completion status
-                                subtask.isCompleted.toggle()
-                            }) {
-                                Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
+            if !task.subtasks.isEmpty {
+                Button(action: {
+                    isExpanded.toggle()
+                }) {
+                    Text(isExpanded ? "Hide Subtasks" : "Show Subtasks")
+                        .foregroundColor(.blue)
+                        .padding() // Add padding to make it clear it's a separate button
+                        .frame(maxWidth: .infinity, alignment: .leading) // Align it to the left
+                }
+                .frame(height: 15)
+                .buttonStyle(PlainButtonStyle()) // Make the button style plain to avoid navigation interference
+                
+                if isExpanded {
+                    VStack(alignment: .leading) {
+                        ForEach(task.subtasks, id: \.id) { subtask in
+                            HStack {
+                                Text(subtask.name)
+                                    .font(.subheadline)
+                                Spacer()
+                                // Checkmark for completion
+                                Button(action: {
+                                    // Handle completion status
+                                    subtask.isCompleted.toggle()
+                                }) {
+                                    Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
+                                }
                             }
                         }
+                        
                     }
-                    
+                    .padding(.leading, 16)
                 }
-                .padding(.leading, 16)
             }
-            */
+            
+            
         }
         .padding(.horizontal)
     }

@@ -116,11 +116,11 @@ struct AddEditTaskView: View {
     }
     
     private func addSubtask() {
-           let newSubtask = Subtask()
-           newSubtask.name = newSubtaskName
-           subtasks.append(newSubtask)
-           newSubtaskName = "" // Clear the input
-       }
+        let newSubtask = Subtask()
+        newSubtask.name = newSubtaskName
+        subtasks.append(newSubtask)
+        newSubtaskName = "" // Clear the input
+    }
     
     
     private var saveButton: some View {
@@ -135,25 +135,28 @@ struct AddEditTaskView: View {
             if let existingTask = task {
                 // Update the existing task
                 let realm = try! Realm()
-                                try! realm.write {
-                                    existingTask.name = taskName
-                                    existingTask.taskDescription = taskDescription
-                                    existingTask.dueDate = dueDate
-                                    existingTask.priority = priority.rawValue
-                                    existingTask.category = category.rawValue
-                                    existingTask.reminderDate = reminderDate
-
-                                    // Clear existing subtasks from the task
-                                    existingTask.subtasks.removeAll()
-
-                                    // Add new subtasks
-                                    for subtask in subtasks {
-                                        let subtaskToAdd = Subtask()
-                                        subtaskToAdd.name = subtask.name
-                                        subtaskToAdd.isCompleted = subtask.isCompleted // Preserve completion state
-                                        existingTask.subtasks.append(subtaskToAdd)
-                                    }
-                                }
+                try! realm.write {
+                    existingTask.name = taskName
+                    existingTask.taskDescription = taskDescription
+                    existingTask.dueDate = dueDate
+                    existingTask.priority = priority.rawValue
+                    existingTask.category = category.rawValue
+                    existingTask.reminderDate = reminderDate
+                    
+                    // Clear existing subtasks from the task
+                    existingTask.subtasks.removeAll()
+                    
+                    // Add new subtasks
+                    for subtask in subtasks {
+                        let subtaskToAdd = Subtask()
+                        subtaskToAdd.name = subtask.name
+                        subtaskToAdd.isCompleted = subtask.isCompleted // Preserve completion state
+                        existingTask.subtasks.append(subtaskToAdd)
+                    }
+                }
+                taskViewModel.objectWillChange.send()
+                
+                
             } else {
                 // Create a new task with the unique order
                 let newOrder: Int
@@ -186,6 +189,7 @@ struct AddEditTaskView: View {
             
             // Dismiss the view
             presentationMode.wrappedValue.dismiss()
+            
         }) {
             Text("Save")
         }
