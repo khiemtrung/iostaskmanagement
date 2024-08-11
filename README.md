@@ -87,14 +87,20 @@ To run this project locally, follow these steps:
 - 
 
 ## Screenshots
-
+Task List Screen
 ![Task List Screen](https://i.imgur.com/g54DDr0.png)
+Task Screen with expandable sub-task
 ![Task Screen with expandable sub-task](https://i.imgur.com/80qM9vo.png)
+Task Detail Screen
 ![Task Detail Screen](https://i.imgur.com/80qM9vo.png)
+Dashboard Screen
 ![Dashboard Screen](https://i.imgur.com/o9LVxhK.png)
+Calendar Screen
 ![Calendar Screen](https://i.imgur.com/ue2SnBV.png)
+Delete and re-arrange task
 ![Delete and re-arrange task](https://i.imgur.com/SDfwebR.png)
-![Add/Edit screen](blob:https://imgur.com/04eeb96f-f09d-4b55-b006-1c42d12b9c41g)
+Add/Edit screen
+![Add/Edit screen](https://imgur.com/04eeb96f-f09d-4b55-b006-1c42d12b9c41g)
 
 ## Video Demonstration
 
