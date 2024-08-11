@@ -17,6 +17,7 @@ struct DashboardView: View {
                 .padding()
 
             HStack {
+                Spacer()
                 VStack {
                     Text("Completed Tasks")
                         .font(.headline)
@@ -38,14 +39,28 @@ struct DashboardView: View {
                 .padding()
                 .background(Color.orange) // Background color for pending tasks
                 .cornerRadius(10)
+                Spacer()
             }
-            .padding(.horizontal)
+            
+            VStack {
+                Text("Deleted Tasks")
+                    .font(.headline)
+                Text("\(taskViewModel.incompleteTasks().count)")
+                    .font(.title)
+                    .foregroundColor(.white)
+            }
+            .padding()
+            .background(Color.red) // Background color for pending tasks
+            .cornerRadius(10)
+            .frame(maxWidth: .infinity)
 
             Spacer()
         }
         .background(Color(UIColor.systemGray6)) // Light gray background for the dashboard
         .cornerRadius(15)
+        .frame(maxWidth: .infinity)
         .padding()
+
     }
 }
 

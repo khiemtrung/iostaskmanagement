@@ -113,6 +113,10 @@ class TaskViewModel: ObservableObject {
         return tasks.filter { !$0.isCompleted }
     }
     
+    func deletedeTasks() -> [Task] {
+        return tasks.filter { !$0.isDeleted }
+    }
+    
     func moveTask(from source: IndexSet, to destination: Int) {
         // Get the tasks that are being moved
         let tasksToMove = source.map { tasks[$0] }
