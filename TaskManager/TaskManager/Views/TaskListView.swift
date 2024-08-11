@@ -18,7 +18,7 @@ struct TaskListView: View {
                     // Use a constant to hold the index
                     
                     NavigationLink(destination: TaskDetailsView(taskViewModel: taskViewModel, task: task)) {
-                        TaskRowView(task: task)
+                        TaskRowView(taskViewModel: taskViewModel, task: task)
                     }
                 }
                 .onDelete(perform: deleteTasks)
@@ -29,8 +29,8 @@ struct TaskListView: View {
                 //leading: categoryButton,
                 leading: EditButton(),
                 trailing: HStack {
-                addButton
-            })
+                    addButton
+                })
             
         }
         .onAppear {
@@ -79,8 +79,8 @@ struct TaskListView: View {
     // Function to filter tasks based on the selected category
     private func filteredTasks() -> [Task] {
         taskViewModel.tasks.filter { task in
-                   (selectedCategory == "All" || task.category == selectedCategory) && !task.isCompleted
-               }
+            (selectedCategory == "All" || task.category == selectedCategory) && !task.isCompleted
+        }
     }
     
     private func triggerHapticFeedback() {
@@ -90,34 +90,74 @@ struct TaskListView: View {
 }
 
 struct TaskRowView: View {
+    @ObservedObject var taskViewModel: TaskViewModel
+    @State private var isExpanded: Bool = false
+    @State private var newSubtaskName: String = ""
     var task: Task
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(task.name)
-                    .font(.headline)
-                
-                Text(task.taskDescription)
-                    .font(.subheadline)
-                Text(task.dueDate.formatted(.dateTime.month().day().hour().minute()))
-                    .font(.subheadline)
-                HStack{
-                    categoryIndicator(for: TaskCategory(rawValue: task.category) ?? .work)
-                    Text(task.category)
+        VStack(alignment: .leading) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(task.name)
+                        .font(.headline)
+                    Text(task.taskDescription)
                         .font(.subheadline)
+                    Text(task.dueDate.formatted(.dateTime.month().day().hour().minute()))
+                        .font(.subheadline)
+                    HStack {
+                        categoryIndicator(for: TaskCategory(rawValue: task.category) ?? .work)
+                        Text(task.category)
+                            .font(.subheadline)
+                    }
                 }
+                Spacer()
+                
+                // Priority Icon
+                priorityIcon(for: TaskPriority(rawValue: task.priority) ?? .low)
+                    .resizable()
+                    .frame(width: 24, height: 24) // Adjust the size as needed
+                    .foregroundColor(priorityColor(for: TaskPriority(rawValue: task.priority) ?? .low))
             }
-            Spacer()
+            .padding(.vertical, 8)
             
-            // Priority Icon
-            priorityIcon(for: TaskPriority(rawValue: task.priority) ?? .low)
-                .resizable()
-                .frame(width: 24, height: 24) // Adjust the size as needed
-                .foregroundColor(priorityColor(for: TaskPriority(rawValue: task.priority) ?? .low))
+           /*
+            // Button to expand/collapse subtasks
+            Button(action: {
+                isExpanded.toggle()
+            }) {
+                Text(isExpanded ? "Hide Subtasks" : "Show Subtasks")
+                    .foregroundColor(.blue)
+                    .padding() // Add padding to make it clear it's a separate button
+                    .frame(maxWidth: .infinity, alignment: .leading) // Align it to the left
+            }
+            .buttonStyle(PlainButtonStyle()) // Make the button style plain to avoid navigation interference
+            
+            if isExpanded {
+                VStack(alignment: .leading) {
+                    ForEach(task.subtasks, id: \.id) { subtask in
+                        HStack {
+                            Text(subtask.name)
+                                .font(.subheadline)
+                            Spacer()
+                            // Checkmark for completion
+                            Button(action: {
+                                // Handle completion status
+                                subtask.isCompleted.toggle()
+                            }) {
+                                Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
+                            }
+                        }
+                    }
+                    
+                }
+                .padding(.leading, 16)
+            }
+            */
         }
-        .padding(.vertical, 8)
+        .padding(.horizontal)
     }
+    
     
     private func priorityIcon(for priority: TaskPriority) -> Image {
         switch priority {

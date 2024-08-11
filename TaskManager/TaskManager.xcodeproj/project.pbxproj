@@ -16,6 +16,7 @@
 		971251602C66957E00A866AD /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9712515F2C66957E00A866AD /* TaskViewModel.swift */; };
 		971251702C679C9000A866AD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9712516F2C679C9000A866AD /* CalendarView.swift */; };
 		971251742C679ED900A866AD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971251732C679ED900A866AD /* CalendarViewController.swift */; };
+		97437E722C689B1F00554C8E /* SubTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97437E712C689B1F00554C8E /* SubTask.swift */; };
 		97F0542F2C665F45009F49E1 /* TaskManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F0542E2C665F45009F49E1 /* TaskManagerApp.swift */; };
 		97F054312C665F45009F49E1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F054302C665F45009F49E1 /* ContentView.swift */; };
 		97F054332C665F47009F49E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F054322C665F47009F49E1 /* Assets.xcassets */; };
@@ -32,6 +33,7 @@
 		9712515F2C66957E00A866AD /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		9712516F2C679C9000A866AD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		971251732C679ED900A866AD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		97437E712C689B1F00554C8E /* SubTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTask.swift; sourceTree = "<group>"; };
 		97F0542B2C665F45009F49E1 /* TaskManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F0542E2C665F45009F49E1 /* TaskManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManagerApp.swift; sourceTree = "<group>"; };
 		97F054302C665F45009F49E1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				971251552C66926A00A866AD /* Task.swift */,
+				97437E712C689B1F00554C8E /* SubTask.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				971251602C66957E00A866AD /* TaskViewModel.swift in Sources */,
 				971251542C668EE500A866AD /* TaskListView.swift in Sources */,
 				971251582C6692A800A866AD /* AddEditTaskView.swift in Sources */,
+				97437E722C689B1F00554C8E /* SubTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

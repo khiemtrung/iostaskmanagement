@@ -41,6 +41,33 @@ class TaskViewModel: ObservableObject {
         }
     }
     
+    func toggleSubtaskCompletion(_ subtask: Subtask) {
+           // Find the task that contains the subtask and toggle its completion
+           if let taskIndex = tasks.firstIndex(where: { $0.subtasks.contains(where: { $0.id == subtask.id }) }) {
+               if let subtaskIndex = tasks[taskIndex].subtasks.firstIndex(where: { $0.id == subtask.id }) {
+                   // Start a write transaction
+                   try! realm.write {
+                       tasks[taskIndex].subtasks[subtaskIndex].isCompleted.toggle()
+                   }
+               }
+           }
+       }
+    
+    func addSubtask(to task: Task, withName name: String) {
+        let subtask = Subtask()
+        subtask.name = name
+        subtask.parentTask = task // Set the parent task
+        
+        do {
+            try realm.write {
+                task.subtasks.append(subtask) // Add the subtask to the parent task
+            }
+            fetchTasks() // Refresh the tasks list after adding a new subtask
+        } catch {
+            print("Error adding subtask: \(error)")
+        }
+    }
+    
     // Update an existing task in Realm
     func editTask(_ task: Task, withName name: String, description: String, dueDate: Date, priority: String, category: String, reminderDate: Date?) {
         try! realm.write {

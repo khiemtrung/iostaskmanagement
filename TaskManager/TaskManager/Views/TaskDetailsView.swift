@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskDetailsView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var taskViewModel: TaskViewModel
-    var task: Task
+    @ObservedObject var task: Task
     
     var body: some View {
         ScrollView {
@@ -78,6 +78,20 @@ struct TaskDetailsView: View {
                 .background(Color(UIColor.systemGray5))
                 .cornerRadius(12)
                 .shadow(radius: 4)
+                
+                // Subtasks Section
+                                VStack(alignment: .leading, spacing: 20) {
+                                    Text("Subtasks")
+                                        .font(.headline)
+
+                                    ForEach(task.subtasks) { subtask in
+                                        // Use `@ObservedObject` for each subtask
+                                        SubtaskRow(subtask: subtask, toggleAction: {
+                                            taskViewModel.toggleSubtaskCompletion(subtask)
+                                        })
+                                    }
+                                }
+                                .padding(.top)
                 
                 HStack {
                     NavigationLink(destination: AddEditTaskView(taskViewModel: taskViewModel, task: task)) {
@@ -163,6 +177,25 @@ struct TaskDetailsView: View {
         case .low:
             return Image(systemName: "circle.fill") // Example icon for low priority
         }
+    }
+}
+
+struct SubtaskRow: View {
+    @ObservedObject var subtask: Subtask
+    let toggleAction: () -> Void
+
+    var body: some View {
+        HStack {
+            Text(subtask.name)
+                .font(.subheadline)
+                .strikethrough(subtask.isCompleted, color: .gray)
+            Spacer()
+            Button(action: toggleAction) {
+                Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+        .padding(.vertical, 4)
     }
 }
 

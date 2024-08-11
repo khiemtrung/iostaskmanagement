@@ -19,7 +19,9 @@ class Task: Object, Identifiable {
     @objc dynamic var isDeleted = false
     @objc dynamic var order: Int = 0 
     @objc dynamic var reminderDate: Date? = nil
-
+    
+    let subtasks = List<Subtask>() // List to store subtasks
+    
     override static func primaryKey() -> String? {
         return "id"
     }

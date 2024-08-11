@@ -7,6 +7,7 @@
 import UIKit
 import SwiftUI
 import UserNotifications
+import RealmSwift
 
 struct AddEditTaskView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -22,6 +23,8 @@ struct AddEditTaskView: View {
     @State private var category: TaskCategory = .work
     
     @State private var showAlert: Bool = false
+    @State private var newSubtaskName: String = ""
+    @State private var subtasks: [Subtask] = [] // List to hold subtasks
     
     var body: some View {
         Form {
@@ -64,6 +67,32 @@ struct AddEditTaskView: View {
                     ), displayedComponents: [.date, .hourAndMinute])
                 }
             }
+            
+            Section(header: Text("Subtasks")) {
+                ForEach(subtasks, id: \.id) { subtask in
+                    HStack {
+                        Text(subtask.name)
+                            .font(.subheadline)
+                        Spacer()
+                        Button(action: {
+                            // Toggle completion status
+                            //subtask.isCompleted.toggle()
+                        }) {
+                            Image(systemName: subtask.isCompleted ? "checkmark.circle.fill" : "circle")
+                        }
+                    }
+                }
+                
+                HStack {
+                    TextField("New Subtask", text: $newSubtaskName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button(action: {
+                        addSubtask()
+                    }) {
+                        Text("Add")
+                    }
+                }
+            }
         }
         .navigationBarTitle(task == nil ? "Add Task" : "Edit Task", displayMode: .inline)
         .navigationBarItems(trailing: saveButton)
@@ -76,12 +105,23 @@ struct AddEditTaskView: View {
                 priority = TaskPriority(rawValue: task.priority) ?? .medium
                 category = TaskCategory(rawValue: task.category) ?? .work
                 reminderDate = task.reminderDate // Populate reminder date if editing
+                
+                // Load existing subtasks
+                subtasks = Array(task.subtasks) // Convert List<Subtask> to [Subtask]
             }
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Missing Title"), message: Text("Please enter a task name."), dismissButton: .default(Text("OK")))
         }
     }
+    
+    private func addSubtask() {
+           let newSubtask = Subtask()
+           newSubtask.name = newSubtaskName
+           subtasks.append(newSubtask)
+           newSubtaskName = "" // Clear the input
+       }
+    
     
     private var saveButton: some View {
         Button(action: {
@@ -94,7 +134,26 @@ struct AddEditTaskView: View {
             
             if let existingTask = task {
                 // Update the existing task
-                taskViewModel.editTask(existingTask, withName: taskName, description: taskDescription, dueDate: dueDate, priority: priority.rawValue, category: category.rawValue, reminderDate: reminderDate)
+                let realm = try! Realm()
+                                try! realm.write {
+                                    existingTask.name = taskName
+                                    existingTask.taskDescription = taskDescription
+                                    existingTask.dueDate = dueDate
+                                    existingTask.priority = priority.rawValue
+                                    existingTask.category = category.rawValue
+                                    existingTask.reminderDate = reminderDate
+
+                                    // Clear existing subtasks from the task
+                                    existingTask.subtasks.removeAll()
+
+                                    // Add new subtasks
+                                    for subtask in subtasks {
+                                        let subtaskToAdd = Subtask()
+                                        subtaskToAdd.name = subtask.name
+                                        subtaskToAdd.isCompleted = subtask.isCompleted // Preserve completion state
+                                        existingTask.subtasks.append(subtaskToAdd)
+                                    }
+                                }
             } else {
                 // Create a new task with the unique order
                 let newOrder: Int
@@ -116,9 +175,13 @@ struct AddEditTaskView: View {
                 newTask.order = newOrder // Set the unique order
                 newTask.reminderDate = reminderDate // Set reminder date
                 
+                // Add the subtasks to the new task
+                for subtask in subtasks {
+                    taskViewModel.addSubtask(to: newTask, withName: subtask.name)
+                }
+                
                 // Add the task to the view model
                 taskViewModel.addTask(newTask)
-                
             }
             
             // Dismiss the view
@@ -128,7 +191,6 @@ struct AddEditTaskView: View {
         }
     }
     
-  
     private func triggerHapticFeedback() {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
