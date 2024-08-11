@@ -42,9 +42,20 @@ struct TaskManagerApp: SwiftUI.App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isFirstTimeUser() {
+                OnboardingView()
+            } else {
+                ContentView()
+            }
+            
         }
     }
+    
+    func isFirstTimeUser() -> Bool {
+        // Implement logic to check if this is the first time the user is opening the app
+        return !UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+    }
+    
     
     func requestNotificationPermissions() {
         let center = UNUserNotificationCenter.current()

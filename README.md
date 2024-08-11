@@ -68,7 +68,7 @@ To run this project locally, follow these steps:
 |                                  | **Create a dashboard view showing task statistics (e.g., completed vs. pending tasks).**              | ✅ Completed                      | Dashboard added in Bottom Menu                           |
 | **Bonus Points (Optional)**      | **Implement data for persistent storage.**                                                            | ✅ Completed                            | Realm is set up                               |
 |                                  | **Add haptic feedback for user interactions.**                                                        | ✅ Completed                            | Haptic feedback for save task, drag-and-drop task, and tap on tab bar menu items |
-|                                  | **Create a visually appealing onboarding experience for first-time users.**                           | ❌ Not Implemented                      | Needs implementation                           |
+|                                  | **Create a visually appealing onboarding experience for first-time users.**                           | ✅ Completed                      | Implemented                           |
 |                                  | **Implement drag-and-drop functionality for reordering tasks.**                                      | ✅ Completed                            | Drag-and-drop functionality added              |
 |                                  | **Add support for subtasks with an expandable/collapsible UI.**                                      | ✅ Completed                            | Added subtask feature to Add/Edit screen and TaskDetailView |
 
@@ -81,16 +81,22 @@ To run this project locally, follow these steps:
 
 ## Future Improvements
 
-- later input
+- Fix bug for some time re-order not update correct posisition
+- Action for show specific list when tap on Dashboard view
+- Delete sub-task
+- 
 
 ## Screenshots
 
-![Task List Screen](path/to/screenshot1.png)
-![Task Details Screen](path/to/screenshot2.png)
-![Add/Edit Task Screen](path/to/screenshot3.png)
-![Dashboard View](path/to/screenshot4.png)
+![Task List Screen](https://i.imgur.com/g54DDr0.png)
+![Task Screen with expandable sub-task](https://i.imgur.com/80qM9vo.png)
+![Task Detail Screen](https://i.imgur.com/80qM9vo.png)
+![Dashboard Screen](https://i.imgur.com/o9LVxhK.png)
+![Calendar Screen](https://i.imgur.com/ue2SnBV.png)
+![Delete and re-arrange task](https://i.imgur.com/SDfwebR.png)
+![Add/Edit screen](blob:https://imgur.com/04eeb96f-f09d-4b55-b006-1c42d12b9c41g)
 
 ## Video Demonstration
 
-[Link to video demonstration](https://.com)
+[Link to video demonstration](https://www.youtube.com/watch?v=GLi3wT4WeNo)
 

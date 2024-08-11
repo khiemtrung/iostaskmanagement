@@ -110,8 +110,8 @@ struct TaskRowView: View {
                         Text(task.category)
                             .font(.subheadline)
                     }
-                    Text("\(task.order)")
-                        .font(.subheadline)
+//                    Text("\(task.order)")
+//                        .font(.subheadline)
                 }
                 Spacer()
                 

@@ -97,6 +97,8 @@ class TaskViewModel: ObservableObject {
                 taskToDelete.isDeleted = true
             }
             fetchTasks() // Refresh tasks
+            objectWillChange.send()
+            
         } catch {
             print("Error deleting task: \(error.localizedDescription)")
         }
@@ -118,7 +120,7 @@ class TaskViewModel: ObservableObject {
     }
     
     func deletedeTasks() -> [Task] {
-        return tasks.filter { !$0.isDeleted }
+        return tasks.filter { $0.isDeleted }
     }
     
     func moveTask(from source: IndexSet, to destination: Int) {
