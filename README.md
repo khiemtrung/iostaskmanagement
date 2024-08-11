@@ -93,7 +93,7 @@ To run this project locally, follow these steps:
 ![Dashboard Screen](https://i.imgur.com/o9LVxhK.png)
 ![Calendar Screen](https://i.imgur.com/ue2SnBV.png)
 ![Delete and re-arrange task](https://i.imgur.com/SDfwebR.png)
-![Add/Edit screen](https://imgur.com/04eeb96f-f09d-4b55-b006-1c42d12b9c41g)
+![Add/Edit screen](https://i.imgur.com/wiQtyBz.png)
 
 ## Video Demonstration
 [Link to video demonstration](https://www.youtube.com/watch?v=GLi3wT4WeNo)
