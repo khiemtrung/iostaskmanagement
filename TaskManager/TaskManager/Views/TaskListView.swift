@@ -82,6 +82,11 @@ struct TaskListView: View {
                    (selectedCategory == "All" || task.category == selectedCategory) && !task.isCompleted
                }
     }
+    
+    private func triggerHapticFeedback() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+    }
 }
 
 struct TaskRowView: View {

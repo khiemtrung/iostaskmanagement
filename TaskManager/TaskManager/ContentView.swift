@@ -4,7 +4,7 @@
 //
 //  Created by Khiem Nguyen Trung on 09/08/2024.
 //
-
+import UIKit
 import SwiftUI
 
 struct ContentView: View {
@@ -18,19 +18,34 @@ struct ContentView: View {
                     Image(systemName: "list.bullet")
                     Text("Tasks")
                 }
+                .onAppear {
+                    triggerHapticFeedback()
+                }
             
             DashboardView(taskViewModel: taskViewModel)
                 .tabItem {
                     Image(systemName: "chart.bar")
                     Text("Dashboard")
                 }
+                .onAppear {
+                    triggerHapticFeedback()
+                }
             
             CalendarView(taskViewModel: taskViewModel, selectedDate: $selectedDate)
-                            .tabItem {
-                                Image(systemName: "calendar")
-                                Text("Calendar")
-                            }
+                .tabItem {
+                    Image(systemName: "calendar")
+                    Text("Calendar")
+                }
+                .onAppear {
+                    triggerHapticFeedback()
+                }
         }
+        
+    }
+    
+    private func triggerHapticFeedback() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
 }
 

@@ -4,7 +4,7 @@
 //
 //  Created by Khiem Nguyen Trung on 10/08/2024.
 //
-
+import UIKit
 import SwiftUI
 import UserNotifications
 
@@ -85,6 +85,7 @@ struct AddEditTaskView: View {
     
     private var saveButton: some View {
         Button(action: {
+            triggerHapticFeedback()
             // Validate that task name is not empty
             if taskName.isEmpty {
                 showAlert = true
@@ -128,4 +129,8 @@ struct AddEditTaskView: View {
     }
     
   
+    private func triggerHapticFeedback() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+    }
 }
