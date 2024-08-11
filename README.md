@@ -41,10 +41,12 @@ To run this project locally, follow these steps:
 1. Clone this repository:
    git clone https://github.com/yourusername/task-management-app.git
 
-2. Open the project in Xcode:
+2. Run "pod install"
+
+3. Open the project in Xcode:
    open iostaskmanagement.xcodeproj
 
-3. Build and run the app on a simulator or physical device.
+4. Build and run the app on a simulator or physical device.
 
 ## Usage
 
